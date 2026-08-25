@@ -10,7 +10,6 @@
 <style>
   :root{
     --bg: #000000;
-    --panel-line: #1a1a1a;
     --border: #262626;
     --border-focus: #4f7cff;
     --text: #fafafa;
@@ -35,13 +34,14 @@
 
   body{
     min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr minmax(340px, 400px) 1fr;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     overflow-x: hidden;
   }
 
-  /* Textura sutil tipo "red de nodos" — evoca el nexo sin invadir el espacio reservado */
+  /* Textura sutil tipo "red de nodos" — evoca el nexo sin distraer */
   body::before{
     content: "";
     position: fixed;
@@ -53,18 +53,6 @@
     z-index: 0;
   }
 
-  /* Paneles laterales — reservados para imágenes futuras */
-  .side-panel{
-    position: relative;
-    background: var(--bg);
-    border-inline: 1px solid var(--panel-line);
-    min-height: 100vh;
-  }
-
-  .side-panel--left{ border-left: none; }
-  .side-panel--right{ border-right: none; }
-
-  /* Columna central */
   main{
     position: relative;
     z-index: 1;
@@ -72,13 +60,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 48px 32px;
-    min-height: 100vh;
-    animation: rise 0.5s ease-out;
+    padding: 48px 24px;
+    width: 100%;
+    animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   @keyframes rise{
-    from{ opacity: 0; transform: translateY(10px); }
+    from{ opacity: 0; transform: translateY(14px); }
     to{ opacity: 1; transform: translateY(0); }
   }
 
@@ -93,35 +81,29 @@
     align-items: center;
   }
 
-  .logo-icon{
-    height: 420px;
-    margin-bottom: 8px;
+  .logo{
+    height: 140px;
     width: auto;
+    max-width: 100%;
     object-fit: contain;
-  }
-
-  .logo-text{
-    height: 168px;
     margin-bottom: 16px;
-    width: auto;
-    object-fit: contain;
+    display: block;
   }
 
-  /* Respaldo textual si algún logo no carga */
+  /* Respaldo textual si logos.png no carga */
   .logo-fallback{
     display: none;
     font-family: 'Space Grotesk', sans-serif;
     font-weight: 600;
     font-size: 32px;
     letter-spacing: -0.02em;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
 
-  .logo-icon.broken,
-  .logo-text.broken{
+  .logo.broken{
     display: none;
   }
-  .logo-text.broken + .logo-fallback{
+  .logo.broken + .logo-fallback{
     display: block;
   }
 
@@ -154,7 +136,7 @@
     border-radius: 4px;
     color: var(--text);
     font-size: 13px;
-    padding: 13px 12px 13px 12px;
+    padding: 13px 12px;
     outline: none;
     transition: border-color 0.15s ease;
     font-family: inherit;
@@ -198,25 +180,6 @@
     transform: scale(0.98);
   }
 
-  .divider{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin: 20px 0;
-    color: var(--text-faint);
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .divider::before,
-  .divider::after{
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
   .signup-box{
     width: 100%;
     max-width: 350px;
@@ -248,15 +211,15 @@
   }
 
   /* ===== Responsive ===== */
-  @media (max-width: 900px){
-    body{
-      grid-template-columns: 1fr;
+  @media (max-width: 480px){
+    .auth-card, .signup-box{
+      max-width: 100%;
     }
-    .side-panel{
-      display: none;
+    .auth-card{
+      padding: 32px 24px 20px;
     }
-    main{
-      padding: 40px 20px;
+    .logo{
+      height: 110px;
     }
   }
 
@@ -268,23 +231,20 @@
 </head>
 <body>
 
-  <div class="side-panel side-panel--left" aria-hidden="true"></div>
-
   <main>
     <div class="auth-card">
-      <img src="logo_cuadrado.png" alt="" class="logo-icon" onerror="this.classList.add('broken')">
-      <img src="logo_texto.png" alt="MKIVO" class="logo-text" onerror="this.classList.add('broken')">
+      <img src="logos.png" alt="MKIVO" class="logo" onerror="this.classList.add('broken')">
       <span class="logo-fallback">MKIVO</span>
 
       <p class="tagline">El nexo entre tus ideas y el mundo</p>
 
       <form id="login-form" autocomplete="on">
         <div class="field">
-          <label for="email" class="sr-only" style="position:absolute;left:-9999px;">Correo electrónico</label>
+          <label for="email" style="position:absolute;left:-9999px;">Correo electrónico</label>
           <input type="email" id="email" name="email" placeholder="Correo electrónico" required>
         </div>
         <div class="field">
-          <label for="password" class="sr-only" style="position:absolute;left:-9999px;">Contraseña</label>
+          <label for="password" style="position:absolute;left:-9999px;">Contraseña</label>
           <input type="password" id="password" name="password" placeholder="Contraseña" required>
         </div>
 
@@ -297,8 +257,6 @@
       <a href="#">Iniciar sesión</a>
     </div>
   </main>
-
-  <div class="side-panel side-panel--right" aria-hidden="true"></div>
 
   <script>
     // Simulación de registro — todavía no conectado a un backend real.
