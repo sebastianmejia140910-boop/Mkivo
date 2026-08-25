@@ -93,15 +93,21 @@
     align-items: center;
   }
 
-  .logo{
-    height: 190px;
+  .logo-icon{
+    height: 90px;
+    margin-bottom: 8px;
     width: auto;
-    max-width: 220px;
     object-fit: contain;
-    margin-bottom: 18px;
   }
 
-  /* Respaldo textual si logo.png no carga */
+  .logo-text{
+    height: 28px;
+    margin-bottom: 16px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  /* Respaldo textual si algún logo no carga */
   .logo-fallback{
     display: none;
     font-family: 'Space Grotesk', sans-serif;
@@ -111,10 +117,11 @@
     margin-bottom: 18px;
   }
 
-  .logo:not([src]), .logo.broken{
+  .logo-icon.broken,
+  .logo-text.broken{
     display: none;
   }
-  .logo.broken + .logo-fallback{
+  .logo-text.broken + .logo-fallback{
     display: block;
   }
 
@@ -265,7 +272,8 @@
 
   <main>
     <div class="auth-card">
-      <img src="logo.png" alt="MKIVO" class="logo" onerror="this.classList.add('broken')">
+      <img src="logo_cuadrado.png" alt="" class="logo-icon" onerror="this.classList.add('broken')">
+      <img src="logo_texto.png" alt="MKIVO" class="logo-text" onerror="this.classList.add('broken')">
       <span class="logo-fallback">MKIVO</span>
 
       <p class="tagline">El nexo entre tus ideas y el mundo</p>
@@ -293,12 +301,24 @@
   <div class="side-panel side-panel--right" aria-hidden="true"></div>
 
   <script>
-    // El botón aún no está conectado a un backend — solo previene el submit por ahora.
+    // Simulación de registro — todavía no conectado a un backend real.
     const form = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      // Aquí se conectará la lógica real de registro/login más adelante.
-      console.log('Formulario listo — falta conectar backend.');
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!email || !password) {
+        alert('Completa tu correo y contraseña para continuar.');
+        return;
+      }
+
+      // Aquí se conectará la lógica real de registro con el backend más adelante.
+      alert('Cuenta creada! Bienvenido a MKIVO');
     });
   </script>
 
